@@ -13,5 +13,22 @@ jobs:
         with:
           cache: true
       - name: Run
-        run:
+        run: |
           go run .
+
+  run-many:
+    strategy:
+      matrix:
+        num-instances: [5, 10, 20]
+        containers-per-instance: [5, 10, 20]
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          cache: true
+      - name: Run
+        run: |
+          ./run-many.sh ${{ matrix.num-instances }} ${{ matrix.containers-per-instance }}

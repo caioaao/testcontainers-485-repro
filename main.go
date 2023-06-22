@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"math/rand"
 	"os"
@@ -40,12 +41,15 @@ var requests = []testcontainers.GenericContainerRequest{
 func main() {
 	rand.Seed(time.Now().Unix())
 
+	numContainers := flag.Int("n", 100, "number of containers to run")
+	flag.Parse()
+
 	g := new(errgroup.Group)
 
 	var containers []testcontainers.Container
 	fails := 0
 
-	for i := 0; i < 100; i++ {
+	for i := 0; i < *numContainers; i++ {
 		i := i
 		g.Go(func() error {
 			container, err := testcontainers.GenericContainer(context.Background(), requests[rand.Int()%len(requests)])
@@ -67,7 +71,7 @@ func main() {
 	}
 
 	if err != nil {
-		fmt.Printf("%d containers failed to start\n", fails)
+		fmt.Printf("%d containers failed to start, out of %d\n", fails, *numContainers)
 		os.Exit(-1)
 	}
 }
