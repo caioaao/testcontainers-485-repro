@@ -1,0 +1,17 @@
+name: main
+
+on:
+  push: {}
+
+jobs:
+  run-main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          cache: true
+      - name: Run
+        run:
+          go run .
