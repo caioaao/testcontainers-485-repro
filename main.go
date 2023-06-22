@@ -27,6 +27,7 @@ var requests = []testcontainers.GenericContainerRequest{
 						pgUser, pgPassword, pgDBName, port.Port())
 				}).
 				WithQuery("SELECT 1").
+				WithOccurrence(2).
 				WithStartupTimeout(5 * time.Second),
 			Env: map[string]string{
 				"POSTGRES_DB":       pgDBName,
